@@ -32,3 +32,31 @@ CREATE TABLE products (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- resto das tabelas
+
+CREATE TABLE images(
+id INT PRIMARY KEY AUTO_INCREMENT,
+product_id INT,
+FOREIGN KEY(product_id) REFERENCES products(id),
+enabled BOOL DEFAULT 0,
+path VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE product_options(
+id INT PRIMARY KEY AUTO_INCREMENT,
+product_id INT,
+FOREIGN KEY(product_id) REFERENCES products(id),
+title VARCHAR(50) NOT NULL,
+shape ENUM('square', 'circle') DEFAULT 'square',
+radius INT DEFAULT 0,
+type ENUM('text', 'color') DEFAULT 'text',
+values VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE product_categories(
+product_id INT NOT NULL,
+FOREIGN KEY(product_id) REFERENCES products(id),
+category_id INT NOT NULL,
+FOREIGN KEY(category_id) REFERENCES categories(id)
+);
