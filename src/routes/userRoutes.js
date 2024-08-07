@@ -29,7 +29,7 @@ function verifyAuthToken(req, res, next) {
     next();
 }
 
-router.get('/v1/users/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);  // Converta o ID para número
     const user = dados.find(user => user.id === id);
     if (user) {
@@ -40,7 +40,7 @@ router.get('/v1/users/:id', (req, res) => {
 });
 
 // Rota POST (/v1/user) para cadastro de usuário
-router.post('/v1/user', (req, res) => {
+router.post('/', (req, res) => {
     const userData = req.body;
 
     // Validação dos dados do usuário
@@ -60,7 +60,7 @@ router.post('/v1/user', (req, res) => {
 });
 
 // Rota PUT (/v1/user/:id) para atualizar dados do usuário
-router.put('/v1/user/:id', verifyAuthToken, (req, res) => {
+router.put('/:id', verifyAuthToken, (req, res) => {
     const id = parseInt(req.params.id, 10); // Converta o ID para número
     const updatedData = req.body;
 
@@ -83,7 +83,7 @@ router.put('/v1/user/:id', verifyAuthToken, (req, res) => {
 });
 
 // Rota DELETE (/v1/user/:id) para excluir um usuário
-router.delete('/v1/user/:id', verifyAuthToken, (req, res) => {
+router.delete('/:id', verifyAuthToken, (req, res) => {
     const id = parseInt(req.params.id, 10); // Converta o ID para número
 
     // Encontrar o índice do usuário
