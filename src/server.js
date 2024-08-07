@@ -9,11 +9,9 @@ const port = 3000;
 
 // Importações de rotas
 const routes = require('./app');
-const userRoutes = require('./routes/userRoutes');
 
 // Uso das rotas
-app.use('/', routes);
-app.use('/', userRoutes);
+app.use('', routes);
 
 // Inicia o servidor na porta definida
 app.listen(port, () => {
