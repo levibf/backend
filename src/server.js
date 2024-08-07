@@ -1,19 +1,21 @@
 // Importa o módulo Express
 const express = require('express');
 
-//Criação de porta
-const port = 3000
-
-// Cria uma nova aplicação Express
+// Cria uma instância do aplicativo Express
 const app = express();
 
-// Importar rotas
-const userRoutes = require('./routes/routes');
+// Define a porta em que o servidor vai rodar
+const port = 3000;
 
-// Usar as rotas
-app.use('/users', userRoutes);
+// Importações de rotas
+const routes = require('./app');
+const userRoutes = require('./routes/userRoutes');
 
-// Inicia o servidor na porta 3000
+// Uso das rotas
+app.use('/', routes);
+app.use('/', userRoutes);
+
+// Inicia o servidor na porta definida
 app.listen(port, () => {
     console.log(`Servidor está rodando na URL http://localhost:${port}`);
 });
