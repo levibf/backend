@@ -29,6 +29,36 @@ function verifyAuthToken(req, res, next) {
     next();
 }
 
+router.get('/v1/users/:id', (req, res) => {
+    const id = parseInt(req.params.id, 10);  // Converta o ID para número
+    const user = dados.find(user => user.id === id);
+    if (user) {
+        res.status(200).json(user);  // Retorne o usuário encontrado
+    } else {
+        res.status(404).send('Usuário não encontrado');  // Status 404 para "não encontrado"
+    }
+});
+
+// Rota POST (/v1/user) para cadastro de usuário
+router.post('/v1/user', (req, res) => {
+    const userData = req.body;
+
+    // Validação dos dados do usuário
+    if (!validateUserData(userData)) {
+        return res.status(400).json({ error: 'Dados da requisição inválidos ou senhas não coincidem' });
+    }
+
+    // Gerar um novo ID para o usuário (baseado no último ID existente)
+    const newId = dados.length ? Math.max(...dados.map(user => user.id)) + 1 : 1;
+    const newUser = { id: newId, ...userData };
+
+    // Adicionar o novo usuário aos dados
+    dados.push(newUser);
+
+    // Responder com sucesso
+    res.status(201).json({ message: 'Usuário cadastrado com sucesso', user: newUser });
+});
+
 // Rota PUT (/v1/user/:id) para atualizar dados do usuário
 router.put('/v1/user/:id', verifyAuthToken, (req, res) => {
     const id = parseInt(req.params.id, 10); // Converta o ID para número
