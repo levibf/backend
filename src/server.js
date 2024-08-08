@@ -1,5 +1,6 @@
 // Importa o módulo Express
 const express = require('express');
+const listEndpoints = require('express-list-endpoints');
 
 // Cria uma instância do aplicativo Express
 const app = express();
@@ -11,7 +12,9 @@ const port = 3000;
 const routes = require('./app');
 
 // Uso das rotas
-app.use('', routes);
+app.use('/', routes);
+
+console.log(listEndpoints(app));
 
 // Inicia o servidor na porta definida
 app.listen(port, () => {
