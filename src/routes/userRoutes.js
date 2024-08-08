@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const userController = require('../controllers/usercontroller');
+
 
 // Dados fictícios para simular um banco de dados
 let dados = [
@@ -9,13 +11,12 @@ let dados = [
     { id: 4, firstname: "Ana", surname: "Souza", email: "ana.souza@example.com" },
     { id: 5, firstname: "Pedro", surname: "Costa", email: "pedro.costa@example.com" },
     { id: 6, firstname: "Misa", surname: "Costa", email: "pedro.costa@example.com", senha: "MisaLindo" }
-    
-    
+
+
 ];
 
 router.get('/:id', (req, res) => {
-    const id = parseInt(req.params.id, 10);  // Converta o ID para número
-    const user = dados.find(user => user.id === id);
+    userController.getUsers(res)
     if (user) {
         res.status(200).json(user);  // Retorne o usuário encontrado
     } else {
