@@ -1,12 +1,13 @@
-require('dotenv').config()
-
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize(process.env.MYSQL_DATABASE, process.env.MYSQLUSER, process.env.MYSQLPASSWORD, {
-    host: process.env.RAILWAY_PRIVATE_DOMAIN,
-    port: process.env.MYSQLPORT,
+const sequelize = new Sequelize('banco_teste', 'root', '1234', {
+    host: 'localhost',
+    port: 3307,
     dialect: 'mysql',
-    logging: false, // Defina como true se você quiser ver logs SQL
+    logging: false,
+    dialectOptions: {
+        connectTimeout: 10000
+    }
 });
 
 module.exports = sequelize;

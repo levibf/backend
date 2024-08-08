@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
-const Product = require('./models/product');
-const Category = require('./models/category');
+const Product = require('./product');
+const Category = require('./category');
 const sequelize = require('../config/database'); // ajuste o caminho conforme sua estrutura
 
 const ProductCategories = sequelize.define('ProductCategories', {
