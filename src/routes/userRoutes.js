@@ -36,7 +36,7 @@ router.post('/', (req, res) => {
 });
 
 // Rota PUT (/v1/user/:id) para atualizar dados do usuário
-router.put('/:id', verifyAuthToken, (req, res) => {
+router.put('/:id', (req, res) => {
     const id = parseInt(req.params.id, 10); // Converta o ID para número
     const updatedData = req.body;
 
@@ -54,7 +54,7 @@ router.put('/:id', verifyAuthToken, (req, res) => {
 });
 
 // Rota DELETE (/v1/user/:id) para excluir um usuário
-router.delete('/:id', verifyAuthToken, (req, res) => {
+router.delete('/:id', (req, res) => {
     const id = parseInt(req.params.id, 10); // Converta o ID para número
 
     // Encontrar o índice do usuário
