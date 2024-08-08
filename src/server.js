@@ -1,6 +1,8 @@
 // Importa o módulo Express
+require('dotenv').config()
 const express = require('express');
 const listEndpoints = require('express-list-endpoints');
+const sequelize = require('./config/database');
 
 // Cria uma instância do aplicativo Express
 const app = express();
@@ -14,7 +16,9 @@ const routes = require('./app');
 // Uso das rotas
 app.use('/', routes);
 
-console.log(listEndpoints(app));
+sequelize.sync()
+    .then(() => console.log('Banco de dados sincronizado'))
+    .catch(err => console.error('Erro ao sincronizar o banco de dados:', err));
 
 // Inicia o servidor na porta definida
 app.listen(port, () => {
