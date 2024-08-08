@@ -7,7 +7,10 @@ let dados = [
     { id: 2, firstname: "Maria", surname: "Oliveira", email: "maria.oliveira@example.com" },
     { id: 3, firstname: "Carlos", surname: "Pereira", email: "carlos.pereira@example.com" },
     { id: 4, firstname: "Ana", surname: "Souza", email: "ana.souza@example.com" },
-    { id: 5, firstname: "Pedro", surname: "Costa", email: "pedro.costa@example.com" }
+    { id: 5, firstname: "Pedro", surname: "Costa", email: "pedro.costa@example.com" },
+    { id: 6, firstname: "Misa", surname: "Costa", email: "pedro.costa@example.com", senha: "MisaLindo" }
+    
+    
 ];
 
 // Função para validar a requisição
