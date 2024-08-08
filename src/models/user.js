@@ -1,6 +1,6 @@
 // models/user.js
 const { DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const sequelize = require('../config/database'); // ajuste o caminho conforme sua estrutura
 
 const User = sequelize.define('User', {
@@ -32,10 +32,10 @@ const User = sequelize.define('User', {
 });
 
 // Antes de salvar o usuário, faça o hash da senha
-User.beforeCreate(async (user, options) => {
-  if (user.password) {
-    user.password = await bcrypt.hash(user.password, 10);
-  }
-});
+// User.beforeCreate(async (user, options) => {
+//   if (user.password) {
+//     user.password = await bcrypt.hash(user.password, 10);
+//   }
+// });
 
 module.exports = User;

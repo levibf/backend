@@ -10,25 +10,6 @@ let dados = [
     { id: 5, firstname: "Pedro", surname: "Costa", email: "pedro.costa@example.com" }
 ];
 
-// Função para validar a requisição
-function validateUserData(data) {
-    const { firstname, surname, email } = data;
-    if (!firstname || !surname || !email) {
-        return false;
-    }
-    // Adicione mais validações conforme necessário (e.g., formato de e-mail)
-    return true;
-}
-
-// Middleware para verificar o token de autorização
-function verifyAuthToken(req, res, next) {
-    const token = req.headers['authorization'];
-    if (!token || token !== 'valid-token') { // Exemplo de validação de token
-        return res.status(401).json({ error: 'Token de autorização inválido ou não fornecido' });
-    }
-    next();
-}
-
 router.get('/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);  // Converta o ID para número
     const user = dados.find(user => user.id === id);
@@ -42,11 +23,6 @@ router.get('/:id', (req, res) => {
 // Rota POST (/v1/user) para cadastro de usuário
 router.post('/', (req, res) => {
     const userData = req.body;
-
-    // Validação dos dados do usuário
-    if (!validateUserData(userData)) {
-        return res.status(400).json({ error: 'Dados da requisição inválidos ou senhas não coincidem' });
-    }
 
     // Gerar um novo ID para o usuário (baseado no último ID existente)
     const newId = dados.length ? Math.max(...dados.map(user => user.id)) + 1 : 1;
@@ -63,11 +39,6 @@ router.post('/', (req, res) => {
 router.put('/:id', verifyAuthToken, (req, res) => {
     const id = parseInt(req.params.id, 10); // Converta o ID para número
     const updatedData = req.body;
-
-    // Validação dos dados do usuário
-    if (!validateUserData(updatedData)) {
-        return res.status(400).json({ error: 'Dados da requisição inválidos' });
-    }
 
     // Encontrar o usuário
     const userIndex = dados.findIndex(user => user.id === id);
@@ -98,5 +69,7 @@ router.delete('/:id', verifyAuthToken, (req, res) => {
     // Responder com sucesso sem conteúdo
     res.status(204).send();
 });
+
+//Routes > Controller > Services > Model
 
 module.exports = router;
