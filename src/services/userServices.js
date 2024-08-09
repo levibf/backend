@@ -107,9 +107,27 @@ const updateUser = (req, res) => {
     }
 };
 
+const deleteUser = (req, res) => {
+    const id = req.params.id;
+
+    User.destroy({
+        where: { id: id }
+    })
+    .then(deleted => {
+        if (deleted === 0) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+        res.status(200).json({ message: 'Usuário deletado com sucesso' });
+    })
+    .catch(erro => {
+        res.status(500).json({ message: 'Erro ao deletar usuário', erro });
+    });
+};
+
 module.exports = {
     getUsers,
     getUserById,
     createUser,
     updateUser,
+    deleteUser
 };
