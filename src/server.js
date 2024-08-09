@@ -6,6 +6,8 @@ const sequelize = require('./config/database');
 
 // Cria uma instância do aplicativo Express
 const app = express();
+
+// Uso de json para repassar para as próximas rotas
 app.use(express.json());
 
 // Define a porta em que o servidor vai rodar
