@@ -113,15 +113,15 @@ const deleteUser = (req, res) => {
     User.destroy({
         where: { id: id }
     })
-    .then(deleted => {
-        if (deleted === 0) {
-            return res.status(404).json({ message: 'Usuário não encontrado' });
-        }
-        res.status(200).json({ message: 'Usuário deletado com sucesso' });
-    })
-    .catch(erro => {
-        res.status(500).json({ message: 'Erro ao deletar usuário', erro });
-    });
+        .then(deleted => {
+            if (deleted === 0) {
+                return res.status(404).json({ message: 'Usuário não encontrado' });
+            }
+            res.sendStatus(204);
+        })
+        .catch(erro => {
+            res.status(500).json({ message: 'Erro ao deletar usuário', erro });
+        });
 };
 
 module.exports = {
