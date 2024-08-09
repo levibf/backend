@@ -17,11 +17,13 @@ const routes = require('./app');
 // Uso das rotas
 app.use('/', routes);
 
+//Inicialização do banco de dados
 sequelize.sync()
-    .then(() => console.log('Banco de dados sincronizado'))
+    .then(() => {
+        console.log('Banco de dados sincronizado')
+        // Inicia o servidor na porta definida
+        app.listen(port, () => {
+            console.log(`Servidor está rodando na URL http://localhost:${port}`);
+        });
+    })
     .catch(err => console.error('Erro ao sincronizar o banco de dados:', err));
-
-// Inicia o servidor na porta definida
-app.listen(port, () => {
-    console.log(`Servidor está rodando na URL http://localhost:${port}`);
-});
