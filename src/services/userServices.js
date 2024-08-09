@@ -71,27 +71,7 @@ const updateUser = (req, res) => {
         return res.status(400).json({ message: 'Pelo menos um campo deve ser fornecido para atualização' });
     }
 
-    // Se a senha for fornecida, faz o hash
-    const updateData = { firstname, surname, email };
-    if (password) {
-        const saltRounds = 10;
-        bcrypt.hash(password, saltRounds)
-            .then(hashedPassword => {
-                updateData.password = hashedPassword;
-                return User.update(updateData, {
-                    where: { id: id }
-                });
-            })
-            .then(result => {
-                if (result[0] === 0) {
-                    return res.status(404).json({ message: 'Usuário não encontrado' });
-                }
-                res.json({ message: 'Usuário atualizado com sucesso' });
-            })
-            .catch(erro => {
-                res.status(500).json({ message: 'Erro ao atualizar usuário', erro });
-            });
-    } else {
+    const updateData = { firstname, surname, email, password };
         User.update(updateData, {
             where: { id: id }
         })
@@ -104,7 +84,6 @@ const updateUser = (req, res) => {
             .catch(erro => {
                 res.status(500).json({ message: 'Erro ao atualizar usuário', erro });
             });
-    }
 };
 
 const deleteUser = (req, res) => {
