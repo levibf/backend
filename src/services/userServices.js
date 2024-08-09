@@ -31,7 +31,7 @@ const getUserById = (req, res) => {
 
 const createUser = (req, res) => {
     // console.log(req.body);
-    const { firstname, surname, email, password, confirmPassword } = req.body;  // Certifique-se de que os nomes correspondem aos dados enviados
+    const { firstname, surname, email, password, confirmPassword } = req.body;
 
     if (!firstname || !surname || !email || !password || !confirmPassword) {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
@@ -43,7 +43,7 @@ const createUser = (req, res) => {
         bcrypt.hash(password, saltRounds)
             .then(senhaCriptografada => {
                 return User.create({
-                    firstname: firstname,  // Correspondente ao nome do campo no modelo
+                    firstname: firstname, 
                     surname: surname,
                     email: email,
                     password: senhaCriptografada
