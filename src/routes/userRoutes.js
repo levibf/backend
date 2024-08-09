@@ -1,43 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/usercontroller');
+const userController = require('../controllers/userController');
 
-
-// Dados fictícios para simular um banco de dados
-let dados = [
-    { id: 1, firstname: "João", surname: "Silva", email: "joao.silva@example.com" },
-    { id: 2, firstname: "Maria", surname: "Oliveira", email: "maria.oliveira@example.com" },
-    { id: 3, firstname: "Carlos", surname: "Pereira", email: "carlos.pereira@example.com" },
-    { id: 4, firstname: "Ana", surname: "Souza", email: "ana.souza@example.com" },
-    { id: 5, firstname: "Pedro", surname: "Costa", email: "pedro.costa@example.com" },
-    { id: 6, firstname: "Misa", surname: "Costa", email: "pedro.costa@example.com", senha: "MisaLindo" }
-
-
-];
-
-router.get('/:id', (req, res) => {
-    userController.getUsers(res)
-    if (user) {
-        res.status(200).json(user);  // Retorne o usuário encontrado
-    } else {
-        res.status(404).send('Usuário não encontrado');  // Status 404 para "não encontrado"
-    }
-});
+router.get('/', userController.getUsers);
+router.get('/:id', userController.getUserById);
 
 // Rota POST (/v1/user) para cadastro de usuário
-router.post('/', (req, res) => {
-    const userData = req.body;
-
-    // Gerar um novo ID para o usuário (baseado no último ID existente)
-    const newId = dados.length ? Math.max(...dados.map(user => user.id)) + 1 : 1;
-    const newUser = { id: newId, ...userData };
-
-    // Adicionar o novo usuário aos dados
-    dados.push(newUser);
-
-    // Responder com sucesso
-    res.status(201).json({ message: 'Usuário cadastrado com sucesso', user: newUser });
-});
+router.post('/', userController.createUser);
 
 // Rota PUT (/v1/user/:id) para atualizar dados do usuário
 router.put('/:id', (req, res) => {
