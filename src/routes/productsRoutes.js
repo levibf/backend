@@ -20,4 +20,4 @@ productRouter.delete('/:id', productController.deleteProduct);
 // Estrutura das rotas
 // Routes > Controller > Services > Model
 
-module.exports = productPouter;
+module.exports = productRouter;
