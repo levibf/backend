@@ -1,21 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const categoriesController = require('../controllers/categories');
+const categoriesController = require('../controllers/categoriesController');
 
-// Rota para buscar todos os usuários
-router.get('/', userController.getUsers);
+// Rota para buscar todos as categorias
+router.get('/', categoriesController.getCategories);
 
-//Rota para buscar por usuário por ID
-router.get('/:id', userController.getUserById);
+//Rota para buscar categoria por ID
+router.get('/:id', categoriesController.getCategoryById);
 
-// Rota POST (/v1/user) para cadastro de usuário
-router.post('/', userController.createUser);
+// Rota POST (/v1/category) para cadastro de uma categoria
+router.post('/', categoriesController.createCategory);
 
-// Rota PUT (/v1/user/:id) para atualizar dados do usuário
-router.put('/:id', userController.updateUser);
+// Rota PUT (/v1/category/:id) para atualizar dados da categoria
+router.put('/:id', categoriesController.updateCategory);
 
-// Rota DELETE (/v1/user/:id) para excluir um usuário
-router.delete('/:id', userController.deleteUser);
+// Rota DELETE (/v1/category/:id) para excluir uma categoria
+router.delete('/:id', categoriesController.deleteCategory);
 
 // Estrutura das rotas
 // Routes > Controller > Services > Model
