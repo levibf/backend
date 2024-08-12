@@ -20,12 +20,12 @@ const routes = require('./app');
 app.use('/', routes);
 
 //Inicialização do banco de dados
-sequelize.sync()
+sequelize.authenticate()
     .then(() => {
-        console.log('Banco de dados sincronizado')
+        console.log('Conexão estabelecida com sucesso com o banco de dados')
         // Inicia o servidor na porta definida
         app.listen(port, () => {
             console.log(`Servidor está rodando na URL http://localhost:${port}`);
         });
     })
-    .catch(err => console.error('Erro ao sincronizar o banco de dados:', err));
+    .catch(err => console.error('Erro ao estabelecer conexão com o banco de dados:', err));
