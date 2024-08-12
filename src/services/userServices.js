@@ -43,7 +43,7 @@ const createUser = (req, res) => {
         bcrypt.hash(password, saltRounds)
             .then(senhaCriptografada => {
                 return User.create({
-                    firstname: firstname, 
+                    firstname: firstname,
                     surname: surname,
                     email: email,
                     password: senhaCriptografada
@@ -64,26 +64,26 @@ const createUser = (req, res) => {
 
 const updateUser = (req, res) => {
     const id = req.params.id;
-    const { firstname, surname, email, password } = req.body;
+    const { firstname, surname, email } = req.body;
 
     // Verifica se pelo menos um campo foi fornecido para atualização
-    if (!firstname && !surname && !email && !password) {
-        return res.status(400).json({ message: 'Pelo menos um campo deve ser fornecido para atualização' });
+    if (!firstname && !surname && !email) {
+        return res.status(400).json({ message: 'Pelo menos um campo (firstname, surname ou email) deve ser fornecido para atualização' });
     }
 
-    const updateData = { firstname, surname, email, password };
-        User.update(updateData, {
-            where: { id: id }
+    const updateData = { firstname, surname, email };
+    User.update(updateData, {
+        where: { id: id }
+    })
+        .then(result => {
+            if (result[0] === 0) {
+                return res.status(404).json({ message: 'Usuário não encontrado' });
+            }
+            res.sendStatus(204);
         })
-            .then(result => {
-                if (result[0] === 0) {
-                    return res.status(404).json({ message: 'Usuário não encontrado' });
-                }
-                res.json({ message: 'Usuário atualizado com sucesso' });
-            })
-            .catch(erro => {
-                res.status(500).json({ message: 'Erro ao atualizar usuário', erro });
-            });
+        .catch(erro => {
+            res.status(500).json({ message: 'Erro ao atualizar usuário', erro });
+        });
 };
 
 const deleteUser = (req, res) => {
