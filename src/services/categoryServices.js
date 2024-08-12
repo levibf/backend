@@ -34,13 +34,11 @@ const createCategory = (req, res) => {
     if (!name || !slug || !use_in_menu) {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
     }
-        Category.create()
-        .then(Category.create({
+        Category.create({
                 name: name,
                 slug: slug,
                 use_in_menu: use_in_menu,
-            })
-        )
+        })
         .then(category => {
             res.status(201).json({ message: 'Categoria criada com sucesso', category: category });
         })

@@ -22,7 +22,7 @@ const updateCategory = (req, res) => {
 
 // Função para excluir uma categoria
 const deleteCategory = (req, res) => {
-  userServices.deleteCategory(req, res);
+  categoryServices.deleteCategory(req, res);
 };
 
 // Exportando as funções
