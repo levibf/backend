@@ -39,6 +39,7 @@ const createUser = (req, res) => {
 
     const saltRounds = 10;
 
+    // Verifica se as senhas são iguais
     if (password === confirmPassword) {
         bcrypt.hash(password, saltRounds)
             .then(senhaCriptografada => {

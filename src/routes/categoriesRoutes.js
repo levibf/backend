@@ -3,7 +3,7 @@ const categoriesRouter = express.Router();
 const categoriesController = require('../controllers/categoriesController');
 
 // Rota para buscar todos as categorias
-categoriesRouter.get('/', categoriesController.getCategories);
+categoriesRouter.get('/search', categoriesController.getCategories);
 
 //Rota para buscar categoria por ID
 categoriesRouter.get('/:id', categoriesController.getCategoryById);
