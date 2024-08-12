@@ -19,6 +19,9 @@ const routes = require('./app');
 // Uso das rotas
 app.use('/', routes);
 
+// Visualizar rotas
+// console.log(listEndpoints(routes))
+
 //Inicialização do banco de dados
 sequelize.authenticate()
     .then(() => {
