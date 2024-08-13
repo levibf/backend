@@ -15,6 +15,37 @@ const getCategories = (req, res) => {
         })
 }
 
+// const getCategories = (req, res) => {
+//     const { limit = 12, page = 1, fields, use_in_menu } = req.query;
+
+//     // Configurar opções de busca
+//     const options = {};
+
+//     // Limitar os campos retornados
+//     if (fields) {
+//         options.attributes = fields.split(',');
+//     }
+
+//     // Filtrar categorias que podem aparecer no menu
+//     if (use_in_menu) {
+//         options.where = { use_in_menu: use_in_menu === 'true' };
+//     }
+
+//     // Configurar paginação
+//     if (limit !== '-1') {
+//         options.limit = parseInt(limit, 10);
+//         options.offset = (parseInt(page, 10) - 1) * options.limit;
+//     }
+
+//     Category.findAll(options)
+//         .then(categories => {
+//             res.status(200).json(categories);
+//         })
+//         .catch(error => {
+//             res.status(500).json({ message: 'Erro ao buscar categorias', error });
+//         });
+// };
+
 // const getCategories = async (query) => {
 //     const limit = parseInt(query.limit, 10) || 10; // Default to 10 if not provided
 //     const searchQuery = query.query || ''; // Default to empty string if not provided
