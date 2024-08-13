@@ -4,70 +4,49 @@ const app = express();
 
 app.use(express.json());
 
-const getCategories = (req, res) => {
-    console.log(req.params)
-    Category.findAll()
-        .then(category => {
-            res.status(200).json(category);
-        })
-        .catch(erro => {
-            res.status(500).json({ message: 'Erro ao buscar categorias', erro });
-        })
-}
+const getCategories = async (req, res) => {
+    try {
+        const { limit = 12, page = 1, fields, use_in_menu } = req.query;
 
-// const getCategories = (req, res) => {
-//     const { limit = 12, page = 1, fields, use_in_menu } = req.query;
+        // Configurar opções de busca
+        const options = {};
 
-//     // Configurar opções de busca
-//     const options = {};
+        // Limitar os campos retornados
+        if (fields) {
+            options.attributes = fields.split(',');
+        }
 
-//     // Limitar os campos retornados
-//     if (fields) {
-//         options.attributes = fields.split(',');
-//     }
+        // Filtrar categorias que podem aparecer no menu
+        if (use_in_menu) {
+            options.where = { use_in_menu: use_in_menu === 'true' };
+        }
 
-//     // Filtrar categorias que podem aparecer no menu
-//     if (use_in_menu) {
-//         options.where = { use_in_menu: use_in_menu === 'true' };
-//     }
+        // Configurar paginação
+        let limitValue = parseInt(limit, 10);
+        let pageValue = parseInt(page, 10);
 
-//     // Configurar paginação
-//     if (limit !== '-1') {
-//         options.limit = parseInt(limit, 10);
-//         options.offset = (parseInt(page, 10) - 1) * options.limit;
-//     }
+        // Validação dos valores de `limit` e `page`
+        if (isNaN(limitValue) || limitValue < 1) {
+            options.limit = 12; // Valor padrão
+        } else if (limitValue !== -1) {
+            options.limit = limitValue;
+            options.offset = (isNaN(pageValue) || pageValue < 1 ? 1 : pageValue - 1) * options.limit;
+        }
 
-//     Category.findAll(options)
-//         .then(categories => {
-//             res.status(200).json(categories);
-//         })
-//         .catch(error => {
-//             res.status(500).json({ message: 'Erro ao buscar categorias', error });
-//         });
-// };
+        // Buscar categorias
+        const categories = await Category.findAll(options);
 
-// const getCategories = async (query) => {
-//     const limit = parseInt(query.limit, 10) || 10; // Default to 10 if not provided
-//     const searchQuery = query.query || ''; // Default to empty string if not provided
-  
-//     try {
-//       // Example logic for fetching categories from a database
-//       // Replace with your actual data fetching logic
-//       const categories = await fetchCategoriesFromDatabase({ limit, searchQuery });
-  
-//       return categories;
-//     } catch (error) {
-//       throw new Error('Error fetching categories: ' + error.message);
-//     }
-//   };
-  
-//   const fetchCategoriesFromDatabase = async ({ limit, searchQuery }) => {
-//     // Example logic to interact with the database
-//     // Adjust this based on your database and schema
-//     return []; // Replace with actual database query result
-//   };
-  
-//   module.exports = { getCategories };
+        // Responder com categorias e informações de paginação
+        res.status(200).json({
+            categories,
+            total: categories.length,
+            limit: limitValue,
+            page: pageValue
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao buscar categorias', error });
+    }
+};
 
 const getCategoryById = (req, res) => {
     const id = req.params.id;
