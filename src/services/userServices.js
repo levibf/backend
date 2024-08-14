@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 const getUsers = (req, res) => {
     User.findAll()
         .then(users => {
-            res.json(users);
+            res.status(200).json(users);
         })
         .catch(erro => {
             res.status(500).json({ message: 'Erro ao buscar usuários', erro });
@@ -35,6 +35,11 @@ const createUser = (req, res) => {
 
     if (!firstname || !surname || !email || !password || !confirmPassword) {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    }
+
+    const userExistente = User.findOne({ where: { email } });
+    if (userExistente) {
+      return res.status(400).json({ error: 'Email já está em uso.' });
     }
 
     const saltRounds = 10;
