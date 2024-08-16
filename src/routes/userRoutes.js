@@ -13,7 +13,7 @@ userRouter.get('/', userController.getUsers);
 userRouter.get('/:id', userController.getUserById);
 
 // Rota POST (/v1/user) para cadastro de usuário
-userRouter.post('/', userController.createUser);
+userRouter.post('/', authenticateToken, userController.createUser);
 
 // Rota PUT (/v1/user/:id) para atualizar dados do usuário
 userRouter.put('/:id', authenticateToken, userController.updateUser);
