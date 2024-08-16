@@ -1,5 +1,4 @@
 // Importa o módulo Express
-require('dotenv').config()
 const express = require('express');
 const listEndpoints = require('express-list-endpoints');
 const sequelize = require('./config/database');
