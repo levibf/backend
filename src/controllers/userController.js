@@ -46,7 +46,7 @@ async function login(req, res) {
     if (!user) {
       return res.status(401).json({ message: 'Usuário não encontrado' });
     }
-
+    // Faz a comparação do hash da senha passada com a do banco e depois retorna erro ou passa
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Senha incorreta' });
