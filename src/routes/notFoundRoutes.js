@@ -2,7 +2,7 @@ const express = require('express');
 const notFoundRouter = express.Router();
 
 const notFound = (req, res) => {
-res.status(404).json({ message: 'endereço não encontrado' });
+    res.status(404).json({ message: 'Endereço não encontrado' });
 }
 
 notFoundRouter.get('/*', notFound);

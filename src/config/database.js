@@ -1,37 +1,39 @@
+require('dotenv').config();
 const { Sequelize } = require('sequelize');
 
-//banco railway 1
-// const sequelize = new Sequelize('railway', 'root', 'XowovCXFTKLJzjvpdUHuCHAMkVDsNtLE', {
-//     host: 'monorail.proxy.rlwy.net',
-//     port: 56321,
-//     dialect: 'mysql',
-//     logging: false,
-//     dialectOptions: {
-//         connectTimeout: 10000
-//     }
-// });
+// Determine the environment
+const env = process.env.DB_ENV || 'production';
 
-//banco railway 2
-// const sequelize = new Sequelize('railway', 'root', 'tqDQWuMddtixyhCdlEdcCVmQAMqzbkoS', {
-//     host: 'roundhouse.proxy.rlwy.net',
-//     port: 53731,
-//     dialect: 'mysql',
-//     logging: false,
-//     dialectOptions: {
-//         connectTimeout: 10000
-//     }
-// });
-
-// Banco locals
-const sequelize = new Sequelize('banco_teste', 'root', '1234', {
-    host: 'localhost',
-    port: 3306,
+// Configuração para produção (Railway 1)
+const productionConfig = {
+    database: process.env.DB_NAME_PROD,
+    username: process.env.DB_USER_PROD,
+    password: process.env.DB_PASSWORD_PROD,
+    host: process.env.DB_HOST_PROD,
+    port: parseInt(process.env.DB_PORT_PROD, 10),
     dialect: 'mysql',
     logging: false,
     dialectOptions: {
         connectTimeout: 10000
     }
-});
+};
+
+// Configuração para teste (Railway 2)
+const testConfig = {
+    database: process.env.DB_NAME_TEST,
+    username: process.env.DB_USER_TEST,
+    password: process.env.DB_PASSWORD_TEST,
+    host: process.env.DB_HOST_TEST,
+    port: parseInt(process.env.DB_PORT_TEST, 10),
+    dialect: 'mysql',
+    logging: false,
+    dialectOptions: {
+        connectTimeout: 10000
+    }
+};
+
+// Exportar a instância do Sequelize com base no ambiente
+const sequelize = new Sequelize(env === 'production' ? productionConfig : testConfig);
 
 
 // src/config/database.js
