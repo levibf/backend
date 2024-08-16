@@ -123,6 +123,32 @@ const deleteCategory = (req, res) => {
         });
 };
 
+
+
+
+// src/services/categoryService.js
+
+async function adicionarCategoria(nome, db = require('../config/database')) {
+    if (!nome) {
+      throw new Error('Nome da categoria é obrigatório');
+    }
+    // Adiciona a categoria ao banco de dados
+    const resultado = await db.insert('categorias', { nome });
+    return resultado;
+  }
+  
+  module.exports = adicionarCategoria;
+  
+  
+
+
+
+
+
+
+
+
+
 module.exports = {
     getCategories,
     getCategoryById,

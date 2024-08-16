@@ -33,4 +33,17 @@ const sequelize = new Sequelize('banco_teste', 'root', '1234', {
     }
 });
 
+
+// src/config/database.js
+
+const insert = async (table, data) => {
+    // Simulação real ou lógica de banco de dados
+    return { id: 1, ...data };
+  };
+  
+  module.exports = {
+    insert
+  };
+  
+
 module.exports = sequelize;
