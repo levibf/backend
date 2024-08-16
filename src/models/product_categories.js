@@ -10,7 +10,7 @@ const ProductCategories = sequelize.define('ProductCategories', {
             model: Product,
             key: 'id'
         }
-      },
+    },
     category_id: {
         type: DataTypes.INTEGER,
         references: {
@@ -19,11 +19,13 @@ const ProductCategories = sequelize.define('ProductCategories', {
         }
     }
 }, {
-  timestamps: true,
+    timestamps: true,
 });
 
-Product.hasOne(ProductCategories);
-Category.hasOne(ProductCategories);
-ProductCategories.hasMany(Product, Category);
+// Definindo as associações corretamente
+Product.hasOne(ProductCategories, { foreignKey: 'product_id' });
+Category.hasOne(ProductCategories, { foreignKey: 'category_id' });
+ProductCategories.belongsTo(Product, { foreignKey: 'product_id' });
+ProductCategories.belongsTo(Category, { foreignKey: 'category_id' });
 
 module.exports = ProductCategories;
