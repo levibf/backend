@@ -27,7 +27,7 @@ const getCategories = async (req, res) => {
 
         // Validação dos valores de `limit` e `page`
         if (isNaN(limitValue) || limitValue < 1) {
-            options.limit = 12; // Valor padrão
+            options.limit = undefined; // Valor padrão
         } else if (limitValue !== -1) {
             options.limit = limitValue;
             options.offset = (isNaN(pageValue) || pageValue < 1 ? 1 : pageValue - 1) * options.limit;
