@@ -39,7 +39,7 @@ const createUser = (req, res) => {
 
     const userExistente = User.findOne({ where: { email } });
     if (userExistente) {
-      return res.status(400).json({ error: 'Email já está em uso.' });
+        return res.status(400).json({ error: 'Email já está em uso.' });
     }
 
     const saltRounds = 10;
