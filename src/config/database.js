@@ -35,17 +35,4 @@ const testConfig = {
 // Exportar a instância do Sequelize com base no ambiente
 const sequelize = new Sequelize(env === 'production' ? productionConfig : testConfig);
 
-
-// src/config/database.js
-
-const insert = async (table, data) => {
-    // Simulação real ou lógica de banco de dados
-    return { id: 1, ...data };
-  };
-  
-  module.exports = {
-    insert
-  };
-  
-
 module.exports = sequelize;
