@@ -1,8 +1,9 @@
 // Importa o módulo Express
 const express = require('express');
-const listEndpoints = require('express-list-endpoints');
+// const listEndpoints = require('express-list-endpoints');
 const sequelize = require('./config/database');
 const Cors = require('./middlewares/corsMiddleware')
+
 // Importações de rotas
 const routes = require('./app');
 
@@ -16,7 +17,6 @@ app.use(Cors);
 
 // Define a porta em que o servidor vai rodar
 const port = 3000;
-
 
 // Uso das rotas
 app.use('/', routes);
