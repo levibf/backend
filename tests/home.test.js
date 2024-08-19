@@ -15,10 +15,10 @@ afterAll(() => {
 test('deve retornar a mensagem de boas-vindas', async () => {
     const response = await request(server).get('/');
 
-    expect(response.status).toBe(200); // Verifica o status da resposta
+    expect(response.status).toBe(200);
     expect(response.body).toEqual({
-        message: 'Bem-vindo a api do Cleitinho',
+        message: 'Bem-vindo a api',
         version: '1.0.0',
-        autor: 'Cleitinho'
-    }); // Verifica o corpo da resposta
+        autor: 'Equipe'
+    });
 });
