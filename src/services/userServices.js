@@ -22,7 +22,7 @@ const getUserById = (req, res) => {
             if (!user) {
                 return res.status(404).json({ message: 'Usuário não encontrado' });
             }
-            res.json(user);
+            res.status(200).json(user);
         })
         .catch(erro => {
             res.status(500).json({ message: 'Erro ao buscar usuário', erro });
@@ -57,7 +57,7 @@ const createUser = (req, res) => {
                 });
             })
             .then(user => {
-                res.json({
+                res.status(201).json({
                     message: 'Usuário criado com sucesso',
                     user: user
                 });
