@@ -6,7 +6,7 @@ const User = require('../models/user');
 
 // Função para gerar o token JWT
 async function generateToken(req, res) {
-  console.log('Middleware de Depuração - Body:', req.body);
+  // console.log('Middleware de Depuração - Body:', req.body);
   const { email, password } = req.body;
 
   if (!email || !password) {
