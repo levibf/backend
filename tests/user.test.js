@@ -6,7 +6,7 @@ describe('POST /v1/user/token', () => {
         const response = await request(app)
             .post('/v1/user/token')
             .send({
-                "email": 'user212@mail.com',
+                "email": 'user@mail.com',
                 "password": '123@123',
             })
             .set('Content-Type', 'application/json')
