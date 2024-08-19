@@ -38,15 +38,15 @@ const createProduct = (req, res) => {
         }
 
         // Cria um objeto de produto com os dados fornecidos
-        const newProduct = {
+       return Product.create = {
             enabled,
-            name,
-            slug,
-            stock,
-            description,
-            price,
-            price_with_discount,
-            category_ids
+            name: name,
+            slug: slug,
+            stock: stock,
+            description: description,
+            price: price,
+            price_with_discount: price_with_discount,
+            category_ids,
         };
 
         // Sucesso
