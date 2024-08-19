@@ -28,7 +28,7 @@ const getProductById = (req, res) => {
 };
 
 const createProduct = (req, res) => {
-    try {
+
         // Dados do produto fornecidos na requisição
         const { enabled, name, slug, stock, description, price, price_with_discount } = req.body;
 
@@ -39,7 +39,7 @@ const createProduct = (req, res) => {
 
         // Cria um objeto de produto com os dados fornecidos
        return Product.create = {
-            enabled,
+            enabled: enabled,
             name: name,
             slug: slug,
             stock: stock,
@@ -47,21 +47,27 @@ const createProduct = (req, res) => {
             price: price,
             price_with_discount: price_with_discount,
             category_ids,
-        };
+        }
 
         // Sucesso
-        res.status(201).json({
-            message: 'Produto criado com sucesso',
-            product: newProduct
-        });
-    } catch (error) {
-        // Erro
-        console.error(error);
-        res.status(500).json({ message: 'Erro ao criar produto', error
-        });
-    }
-};
+        .then(createProduct => {
+            res.status(200).json({
+                message: 'Produto criado com sucesso',
+                product: createProduct
+            });
+        })
 
+        .catch(error => {
+            // Erro
+            console.error('Erro ao criar produto:', error);
+            res.status(500).json({
+                message: 'Erro ao criar produto',
+                error
+            });
+        })
+
+    };
+    
 
 const updateProduct = (req, res) => {
     // ID do produto a ser atualizado
