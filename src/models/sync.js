@@ -1,4 +1,3 @@
-// sync.js
 const sequelize = require('../config/database');
 const User = require('./user');
 const Category = require('./category');

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const userServices = require('../services/userServices');
@@ -5,6 +6,7 @@ const User = require('../models/user');
 
 // Função para gerar o token JWT
 async function generateToken(req, res) {
+  console.log('Middleware de Depuração - Body:', req.body);
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -46,7 +48,7 @@ async function login(req, res) {
     if (!user) {
       return res.status(401).json({ message: 'Usuário não encontrado' });
     }
-
+    // Faz a comparação do hash da senha passada com a do banco e depois retorna erro ou passa
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Senha incorreta' });

@@ -26,8 +26,8 @@ const getCategories = async (req, res) => {
         let pageValue = parseInt(page, 10);
 
         // Validação dos valores de `limit` e `page`
-        if (isNaN(limitValue) || limitValue < 1) {
-            options.limit = 12; // Valor padrão
+        if (isNaN(limitValue) || limitValue === -1) {
+            options.limit = undefined; // Valor padrão
         } else if (limitValue !== -1) {
             options.limit = limitValue;
             options.offset = (isNaN(pageValue) || pageValue < 1 ? 1 : pageValue - 1) * options.limit;
@@ -36,10 +36,14 @@ const getCategories = async (req, res) => {
         // Buscar categorias
         const categories = await Category.findAll(options);
 
+        //total de categorias
+        let totalCategories = {};
+        let total = await Category.findAll(totalCategories);
+
         // Responder com categorias e informações de paginação
         res.status(200).json({
             categories,
-            total: categories.length,
+            total: total.length,
             limit: limitValue,
             page: pageValue
         });
@@ -122,6 +126,32 @@ const deleteCategory = (req, res) => {
             res.status(500).json({ message: 'Erro ao deletar categoria', erro });
         });
 };
+
+
+
+
+// src/services/categoryService.js
+
+async function adicionarCategoria(nome, db = require('../config/database')) {
+    if (!nome) {
+        throw new Error('Nome da categoria é obrigatório');
+    }
+    // Adiciona a categoria ao banco de dados
+    const resultado = await db.insert('categorias', { nome });
+    return resultado;
+}
+
+module.exports = adicionarCategoria;
+
+
+
+
+
+
+
+
+
+
 
 module.exports = {
     getCategories,

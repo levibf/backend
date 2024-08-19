@@ -12,8 +12,8 @@ const Image = sequelize.define('Image', {
   product_id: {
     type: DataTypes.INTEGER,
     references: {
-        model: Product,
-        key: 'id'
+      model: Product,
+      key: 'id'
     }
   },
   enabled: {
@@ -28,7 +28,7 @@ const Image = sequelize.define('Image', {
   timestamps: true,
 });
 
-Product.hasOne(Image);
-Image.hasOne(Product);
+Image.belongsTo(Product, { foreignKey: 'productId' });
+Product.hasMany(Image, { foreignKey: 'productId' });
 
 module.exports = Image;

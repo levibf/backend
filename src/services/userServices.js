@@ -37,10 +37,11 @@ const createUser = (req, res) => {
         return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
     }
 
-    const userExistente = User.findOne({ where: { email } });
-    if (userExistente) {
-        return res.status(400).json({ error: 'Email já está em uso.' });
-    }
+    // const userExistente = User.findOne({ where: { email } });
+    // // console.log(userExistente)
+    // if (!userExistente) {
+    //     return res.status(400).json({ error: 'Email já está em uso.' });
+    // }
 
     const saltRounds = 10;
 
