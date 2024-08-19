@@ -33,12 +33,12 @@ const createProduct = (req, res) => {
         const { enabled, name, slug, stock, description, price, price_with_discount } = req.body;
 
         // Valida os dados recebidos
-        if (!name || !slug || stock === undefined || price === undefined || price_with_discount === undefined || category_ids) {
+        if (!name || !slug || stock === undefined || price === undefined || price_with_discount === undefined) {
             return res.status(400).json({ message: 'Dados inválidos. Todos os campos são obrigatórios.' });
         }
 
         // Cria um objeto de produto com os dados fornecidos
-       return Product.create = {
+       Product.create = {
             enabled: enabled,
             name: name,
             slug: slug,
@@ -50,10 +50,10 @@ const createProduct = (req, res) => {
         }
 
         // Sucesso
-        .then(createProduct => {
+        .then(product => {
             res.status(200).json({
                 message: 'Produto criado com sucesso',
-                product: createProduct
+                product: product
             });
         })
 
@@ -65,7 +65,7 @@ const createProduct = (req, res) => {
                 error
             });
         })
-
+        
     };
     
 
