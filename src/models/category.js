@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); // ajuste o caminho conforme sua estrutura
+const sequelize = require('../config/database'); // ajuste o caminho conforme necessário
 
 const Category = sequelize.define('Category', {
   id: {
@@ -23,5 +23,10 @@ const Category = sequelize.define('Category', {
 }, {
   timestamps: true,
 });
+
+// Associações
+Category.associate = function(models) {
+  Category.belongsToMany(models.Product, { through: 'ProductCategories', foreignKey: 'categoryId', otherKey: 'productId' });
+};
 
 module.exports = Category;

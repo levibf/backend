@@ -12,8 +12,8 @@ const ProductOptions = sequelize.define('ProductOptions', {
   product_id: {
     type: DataTypes.INTEGER,
     references: {
-        model: Product,
-        key: 'id'
+      model: Product,
+      key: 'id'
     }
   },
   title: {
@@ -21,7 +21,7 @@ const ProductOptions = sequelize.define('ProductOptions', {
     allowNull: false,
   },
   shape: {
-    type: DataTypes.ENUM('square','circle'),
+    type: DataTypes.ENUM('square', 'circle'),
     defaultValue: 'square',
   },
   radius: {
@@ -29,7 +29,7 @@ const ProductOptions = sequelize.define('ProductOptions', {
     defaultValue: 0,
   },
   type: {
-    type: DataTypes.ENUM('text','color'),
+    type: DataTypes.ENUM('text', 'color'),
     defaultValue: 'text',
   },
   values: {
@@ -40,7 +40,7 @@ const ProductOptions = sequelize.define('ProductOptions', {
   timestamps: true,
 });
 
-Product.hasOne(ProductOptions);
-ProductOptions.hasOne(Product);
+ProductOptions.belongsTo(Product, { foreignKey: 'productId' });
+Product.hasMany(ProductOptions, { foreignKey: 'productId' });
 
 module.exports = ProductOptions;

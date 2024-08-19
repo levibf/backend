@@ -23,9 +23,7 @@ const ProductCategories = sequelize.define('ProductCategories', {
 });
 
 // Definindo as associações corretamente
-Product.hasOne(ProductCategories, { foreignKey: 'product_id' });
-Category.hasOne(ProductCategories, { foreignKey: 'category_id' });
-ProductCategories.belongsTo(Product, { foreignKey: 'product_id' });
-ProductCategories.belongsTo(Category, { foreignKey: 'category_id' });
+Product.belongsToMany(Category, { through: ProductCategories, foreignKey: 'product_id' });
+Category.belongsToMany(Product, { through: ProductCategories, foreignKey: 'category_id' });
 
 module.exports = ProductCategories;
