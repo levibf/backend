@@ -23,13 +23,11 @@ const getProduct = async (req, res) => {
             where: {},
             include: [
                 { model: Image, attributes: ['id', 'path'] }, // Inclua imagens
-                { model: ProductOption, attributes: ['id', 'title', 'values'] }, // Inclua opções
+                { model: ProductOption, attributes: ['id', 'title', 'shape', 'radius', 'type', 'values'] }, // Inclua opções
                 { model: Category, attributes: ['id'], through: { attributes: [] } } // Inclua categorias
             ],
             order: [['name', 'ASC']] // Ajuste a ordenação conforme necessário
         };
-
-        console.log('Request Query:', req.query);
 
         // Filtrar produtos por nome ou descrição
         if (match) {
@@ -53,15 +51,16 @@ const getProduct = async (req, res) => {
 
         // Filtrar por opções
         for (const [key, value] of Object.entries(options)) {
-            if (key.startsWith('option[') && value) {
+            if (key.startsWith('option[')) {
                 const optionId = parseInt(key.match(/\d+/)[0], 10);
                 const optionValues = value.split(',');
+
                 queryOptions.include.push({
                     model: ProductOption,
                     where: {
                         id: optionId,
                         values: {
-                            [Op.contains]: optionValues
+                            [Op.overlap]: optionValues // Usar Op.overlap para comparar arrays
                         }
                     },
                     required: true
@@ -100,18 +99,18 @@ const getProduct = async (req, res) => {
             description: product.description,
             price: product.price,
             price_with_discount: product.price_with_discount,
-            category_ids: product.product_categories.map(pc => pc.category_id),
-            images: product.images.map(img => ({
+            category_ids: (product.Categories ?? []).map(cat => cat.id),
+            images: (product.Images ?? []).map(img => ({
                 id: img.id,
                 content: img.path // Verifique se o nome do campo é correto
             })),
-            options: product.product_options.map(option => ({
-                id: option.id,
-                title: option.title,
-                shape: option.shape,
-                radius: option.radius,
-                type: option.type,
-                values: option.values.split(',')
+            options: (product.ProductOption ?? []).map(option => ({
+                id: option?.id || '2',
+                title: option?.title || 'Teste',
+                shape: option?.shape || 'square',
+                radius: option?.radius !== undefined ? option.radius : '4',
+                type: option?.type || 'text',
+                values: option?.values?.split(',') || []
             }))
         }));
 
