@@ -87,7 +87,7 @@ async function createProduct(req, res) {
                     shape: option.shape,
                     radius: radiusValue,
                     type: option.type,
-                    values: option.values.join(','), // Convertendo o array para uma string separada por vírgulas
+                    values: option.values.join(','),
                     product_id: product.id
                 });
             }
