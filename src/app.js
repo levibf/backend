@@ -14,8 +14,8 @@ router.get('/', (req, res) => {
 
 // Usar rotas
 router.use('/v1/user', userRoutes);
-router.use('/v1/categories', categoriesRoutes);
-router.use('/v1/products', productRouter);
+router.use('/v1/category', categoriesRoutes);
+router.use('/v1/product', productRouter);
 router.use('/*', notFoundRouter);
 
 module.exports = router;

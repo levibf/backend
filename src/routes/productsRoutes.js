@@ -2,8 +2,8 @@ const express = require('express');
 const productRouter = express.Router();
 const productController = require('../controllers/productController');
 
-// Rota para buscar todos os usuários
-productRouter.get('/', productController.getProduct);
+// Rota para buscar todos os produtos
+productRouter.get('/search', productController.getProduct);
 
 //Rota para buscar por usuário por ID
 productRouter.get('/:id', productController.getProductById);
