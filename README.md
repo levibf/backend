@@ -1,7 +1,7 @@
 # backend
 Projeto back-end Digital College
 
-#Equipe:
+# Equipe:
  - Johny
  - Levi
  - Misael
