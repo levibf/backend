@@ -17,11 +17,11 @@ const createSampleCategories = async (numCategories) => {
         for (let i = 0; i < numCategories; i++) {
             const userData = generateUserData();
             await Categories.create(userData);
-            console.log(`Usuário criado: ${userData.name}`);
+            console.log(`Categoria criada: ${userData.name}`);
         }
         console.log('Todos as categorias foram criados com sucesso!');
     } catch (error) {
-        console.error('Erro ao criar usuários:', error);
+        console.error('Erro ao criar categorias:', error);
     }
 };
 

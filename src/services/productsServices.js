@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const Product = require('../models/product');
 const Image = require('../models/image');
 const ProductOption = require('../models/product_options');
-const ProductCategory = require('../models/category');
+const Category = require('../models/category');
 const ProductCategories = require('../models/product_categories');
 
 const getProduct = async (req, res) => {
@@ -24,7 +24,7 @@ const getProduct = async (req, res) => {
             include: [
                 { model: Image, attributes: ['id', 'path'] }, // Inclua imagens
                 { model: ProductOption, attributes: ['id', 'title', 'values'] }, // Inclua opções
-                { model: ProductCategory, attributes: ['id'], through: { attributes: [] } } // Inclua categorias
+                { model: Category, attributes: ['id'], through: { attributes: [] } } // Inclua categorias
             ],
             order: [['name', 'ASC']] // Ajuste a ordenação conforme necessário
         };
@@ -128,7 +128,6 @@ const getProduct = async (req, res) => {
     }
 };
 
-
 const getProductById = async (req, res) => {
     try {
         const id = parseInt(req.params.id, 10);
@@ -155,7 +154,7 @@ const getProductById = async (req, res) => {
         });
 
         // Buscar categorias do produto
-        const productCategories = await ProductCategory.findAll({
+        const productCategories = await Category.findAll({
             where: { id: id }
         });
 
@@ -193,7 +192,6 @@ const getProductById = async (req, res) => {
     }
 };
 
-
 async function createProduct(req, res) {
     const {
         enabled, name, slug, stock, description, price, price_with_discount,
@@ -209,7 +207,7 @@ async function createProduct(req, res) {
         // Adiciona as categorias ao produto (simplesmente cria a associação)
         if (category_ids && category_ids.length > 0) {
             // Adiciona as categorias ao produto diretamente na tabela de associação
-            await ProductCategory.bulkCreate(
+            await Category.bulkCreate(
                 category_ids.map(category_id => ({
                     name: '',
                     slug: '',
@@ -266,66 +264,127 @@ async function createProduct(req, res) {
     }
 }
 
-const updateProduct = (req, res) => {
-    // ID do produto a ser atualizado
-    const { id } = req.params;
+const updateProduct = async (req, res) => {
+    try {
+        const id = parseInt(req.params.id, 10);
 
-    // Dados do produto fornecidos na requisição
-    const { enabled, name, slug, stock, description, price, price_with_discount } = req.body;
+        if (isNaN(id)) {
+            return res.status(400).json({ message: 'ID inválido' });
+        }
 
-    // Valida o ID
-    if (!id) {
-        return res.status(400).json({ message: 'ID do produto é necessário.' });
-    }
+        // Buscar o produto pelo ID
+        const product = await Product.findByPk(id);
 
-    // Valida os dados fornecidos
-    if (!name || !slug || stock === undefined || price === undefined || price_with_discount === undefined) {
-        return res.status(400).json({ message: 'Dados inválidos. Todos os campos obrigatórios devem ser fornecidos.' });
-    }
+        if (!product) {
+            return res.status(404).json({ message: 'Produto não encontrado' });
+        }
 
-    // Encontra o produto a ser atualizado
-    Product.findByPk(id)
-        .then(product => {
-            if (!product) {
-                return res.status(404).json({ message: 'Produto não encontrado.' });
-            }
-
-            // Atualiza o produto com os dados fornecidos
-            return product.update({ enabled, name, slug, stock, description, price, price_with_discount });
-        })
-        .then(updatedProduct => {
-            // Sucesso
-            res.status(200).json({
-                message: 'Produto atualizado com sucesso',
-                product: updatedProduct
-            });
-        })
-        .catch(error => {
-            // Erro
-            console.error('Erro ao atualizar produto:', error);
-            res.status(500).json({
-                message: 'Erro ao atualizar produto',
-                error
-            });
+        // Atualizar informações do produto
+        await product.update({
+            enabled: req.body.enabled,
+            name: req.body.name,
+            slug: req.body.slug,
+            stock: req.body.stock,
+            description: req.body.description,
+            price: req.body.price,
+            price_with_discount: req.body.price_with_discount
         });
+
+        // Atualizar imagens
+        if (req.body.images) {
+            for (const img of req.body.images) {
+                if (img.deleted) {
+                    // Excluir imagem
+                    await Image.destroy({ where: { id: img.id } });
+                } else if (img.id) {
+                    // Atualizar imagem existente
+                    await Image.update({ path: img.content }, { where: { id: img.id } });
+                } else {
+                    // Criar nova imagem
+                    await Image.create({
+                        product_id: id,
+                        type: img.type,
+                        path: img.content
+                    });
+                }
+            }
+        }
+
+        // Atualizar opções
+        if (req.body.options) {
+            for (const option of req.body.options) {
+                if (option.deleted) {
+                    // Excluir opção
+                    await ProductOption.destroy({ where: { id: option.id } });
+                } else if (option.id) {
+                    const radiusValue = option.radius ? parseInt(option.radius.replace('px', ''), 10) : 0;
+
+                    // Atualizar opção existente
+                    await ProductOption.update({
+                        title: option.title,
+                        shape: option.shape,
+                        radius: radiusValue,
+                        type: option.type,
+                        values: option.values ? option.values.join(',') : null
+                    }, { where: { id: option.id } });
+                } else {
+                    // Criar nova opção
+                    await ProductOption.create({
+                        product_id: id,
+                        title: option.title,
+                        shape: option.shape,
+                        type: option.type,
+                        values: option.values.join(',')
+                    });
+                }
+            }
+        }
+
+        // Atualizar categorias
+        if (req.body.category_ids) {
+            // Excluir todas as categorias atuais do produto
+            await ProductCategories.destroy({ where: { product_id: id } });
+
+            // Adicionar novas categorias
+            for (const categoryId of req.body.category_ids) {
+                // Verificar se a categoria existe antes de adicionar
+                const category = await Category.findByPk(categoryId);
+                if (category) {
+                    await ProductCategories.create({ product_id: id, category_id: categoryId });
+                } else {
+                    return res.status(400).json({ message: `Categoria com ID ${categoryId} não encontrada` });
+                }
+            }
+        }
+
+        // Responder com sucesso
+        res.status(204).end();
+    } catch (error) {
+        console.error('Erro ao atualizar produto:', error);
+        res.status(500).json({ message: 'Erro ao atualizar produto', error: error.message });
+    }
 };
 
-const deleteProduct = (req, res) => {
+
+const deleteProduct = async (req, res) => {
     const id = req.params.id;
 
-    Product.destroy({
-        where: { id: id }
-    })
-        .then(deleted => {
-            if (deleted === 0) {
-                return res.status(404).json({ message: 'Produto não encontrado' });
-            }
-            res.sendStatus(204);
-        })
-        .catch(erro => {
-            res.status(500).json({ message: 'Erro ao deletar produto', erro });
-        });
+    try {
+        // Remover as opções de produto associadas ao produto
+        await ProductOption.destroy({ where: { product_id: id } });
+
+        // Remover o produto
+        const deleted = await Product.destroy({ where: { id: id } });
+
+        if (deleted === 0) {
+            return res.status(404).json({ message: 'Produto não encontrado' });
+        }
+        res.sendStatus(204);
+    } catch (erro) {
+        res.status(500).json({ message: 'Erro ao deletar produto', erro });
+    }
 };
+
 
 module.exports = {
     getProduct,
