@@ -1,12 +1,12 @@
 const request = require('supertest');
-const app = require('../app'); // Importe o app da sua aplicação
+const app = require('../src/server');
 
 describe('Testes de Categorias', () => {
-    
+
     let createdCategoryId; // Para armazenar o ID da categoria criada durante o teste
 
     // Teste de Criação de Novo Registro
-    describe('POST /v1/categories', () => {
+    describe('POST /v1/category', () => {
         it('Deve criar uma nova categoria', async () => {
             const newCategory = {
                 name: 'Categoria Teste',
@@ -14,7 +14,7 @@ describe('Testes de Categorias', () => {
             };
 
             const response = await request(app)
-                .post('/v1/categories')
+                .post('/v1/category')
                 .send(newCategory)
                 .set('Content-Type', 'application/json');
 
@@ -28,10 +28,10 @@ describe('Testes de Categorias', () => {
     });
 
     // Teste de Leitura de Registros
-    describe('GET /v1/categories/:id', () => {
+    describe('GET /v1/category/:id', () => {
         it('Deve recuperar uma categoria existente', async () => {
             const response = await request(app)
-                .get(`/v1/categories/${createdCategoryId}`)
+                .get(`/v1/category/${createdCategoryId}`)
                 .set('Accept', 'application/json');
 
             expect(response.statusCode).toBe(200);
@@ -42,7 +42,7 @@ describe('Testes de Categorias', () => {
     });
 
     // Teste de Atualização de Registro
-    describe('PUT /v1/categories/:id', () => {
+    describe('PUT /v1/category/:id', () => {
         it('Deve atualizar uma categoria existente', async () => {
             const updatedCategory = {
                 name: 'Categoria Atualizada',
@@ -50,7 +50,7 @@ describe('Testes de Categorias', () => {
             };
 
             const response = await request(app)
-                .put(`/v1/categories/${createdCategoryId}`)
+                .put(`/v1/category/${createdCategoryId}`)
                 .send(updatedCategory)
                 .set('Content-Type', 'application/json');
 
@@ -62,17 +62,17 @@ describe('Testes de Categorias', () => {
     });
 
     // Teste de Exclusão de Registro
-    describe('DELETE /v1/categories/:id', () => {
+    describe('DELETE /v1/category/:id', () => {
         it('Deve excluir uma categoria existente', async () => {
             const response = await request(app)
-                .delete(`/v1/categories/${createdCategoryId}`)
+                .delete(`/v1/category/${createdCategoryId}`)
                 .set('Accept', 'application/json');
 
             expect(response.statusCode).toBe(204); // Status de exclusão bem-sucedida
 
             // Verificar se a categoria foi realmente removida
             const getResponse = await request(app)
-                .get(`/v1/categories/${createdCategoryId}`)
+                .get(`/v1/category/${createdCategoryId}`)
                 .set('Accept', 'application/json');
 
             expect(getResponse.statusCode).toBe(404); // Espera-se que a categoria não seja encontrada
@@ -80,14 +80,14 @@ describe('Testes de Categorias', () => {
     });
 
     // Teste de Validação de Dados
-    describe('POST /v1/categories', () => {
+    describe('POST /v1/category', () => {
         it('Não deve criar uma categoria com dados inválidos', async () => {
             const invalidCategory = {
                 description: 'Descrição inválida', // Falta o campo 'name'
             };
 
             const response = await request(app)
-                .post('/v1/categories')
+                .post('/v1/category')
                 .send(invalidCategory)
                 .set('Content-Type', 'application/json');
 
@@ -97,12 +97,12 @@ describe('Testes de Categorias', () => {
     });
 
     // Teste de Erro de Registro Não Encontrado
-    describe('GET /v1/categories/:id', () => {
+    describe('GET /v1/category/:id', () => {
         it('Deve retornar um erro para uma categoria não encontrada', async () => {
             const invalidCategoryId = 999; // Supondo que a categoria com ID 999 não exista
 
             const response = await request(app)
-                .get(`/v1/categories/${invalidCategoryId}`)
+                .get(`/v1/category/${invalidCategoryId}`)
                 .set('Accept', 'application/json');
 
             expect(response.statusCode).toBe(404); // Status de não encontrado

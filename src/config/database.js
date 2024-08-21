@@ -14,7 +14,8 @@ const productionConfig = {
     dialect: 'mysql',
     logging: false,
     dialectOptions: {
-        connectTimeout: 10000
+        connectTimeout: 10000,
+        charset: 'utf8mb4'
     }
 };
 
@@ -28,7 +29,8 @@ const testConfig = {
     dialect: 'mysql',
     logging: false,
     dialectOptions: {
-        connectTimeout: 10000
+        connectTimeout: 10000,
+        charset: 'utf8mb4'
     }
 };
 

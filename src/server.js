@@ -1,3 +1,4 @@
+require('iconv-lite').encodingExists('foo')
 // Importa o módulo Express
 const express = require('express');
 // const listEndpoints = require('express-list-endpoints');
@@ -34,3 +35,5 @@ sequelize.authenticate()
         });
     })
     .catch(err => console.error('Erro ao estabelecer conexão com o banco de dados:', err));
+
+module.exports = app

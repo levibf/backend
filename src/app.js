@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const app = express();
 
 // Importar rotas
 const userRoutes = require('./routes/userRoutes');
@@ -8,14 +9,17 @@ const productRouter = require('./routes/productsRoutes');
 const notFoundRouter = require('./routes/notFoundRoutes');
 
 // Rota GET para a página inicial
-router.get('/', (req, res) => {
-    res.send('Página Inicial');
-});
+app.get('/', (req, res) => {
+    res.json({
+        message: 'Bem-vindo',
+    });
+})
 
 // Usar rotas
-router.use('/v1/user', userRoutes);
-router.use('/v1/category', categoriesRoutes);
-router.use('/v1/product', productRouter);
-router.use('/*', notFoundRouter);
+app.use('/v1/user', userRoutes);
+app.use('/v1/category', categoriesRoutes);
+app.use('/v1/product', productRouter);
+app.use('/*', notFoundRouter);
 
 module.exports = router;
+module.exports = app;

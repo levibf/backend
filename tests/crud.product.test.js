@@ -1,4 +1,4 @@
-describe('POST /v1/products', () => {
+describe('POST /v1/product', () => {
     it('Deve criar um novo produto', async () => {
         const newProduct = {
             name: 'Produto Teste',
@@ -7,7 +7,7 @@ describe('POST /v1/products', () => {
         };
 
         const response = await request(app)
-            .post('/v1/products')
+            .post('/v1/product')
             .send(newProduct)
             .set('Content-Type', 'application/json');
 
@@ -18,12 +18,12 @@ describe('POST /v1/products', () => {
         expect(response.body.category).toBe(newProduct.category);
     }, 10000);
 });
-describe('GET /v1/products/:id', () => {
+describe('GET /v1/product/:id', () => {
     it('Deve recuperar um produto existente', async () => {
         const productId = 1; // Supondo que o produto com ID 1 exista
 
         const response = await request(app)
-            .get(`/v1/products/${productId}`)
+            .get(`/v1/product/${productId}`)
             .set('Accept', 'application/json');
 
         expect(response.statusCode).toBe(200);
@@ -33,7 +33,7 @@ describe('GET /v1/products/:id', () => {
         expect(response.body).toHaveProperty('category');
     }, 10000);
 });
-describe('PUT /v1/products/:id', () => {
+describe('PUT /v1/product/:id', () => {
     it('Deve atualizar um produto existente', async () => {
         const productId = 1; // Supondo que o produto com ID 1 exista
         const updatedProduct = {
@@ -43,7 +43,7 @@ describe('PUT /v1/products/:id', () => {
         };
 
         const response = await request(app)
-            .put(`/v1/products/${productId}`)
+            .put(`/v1/product/${productId}`)
             .send(updatedProduct)
             .set('Content-Type', 'application/json');
 
@@ -54,37 +54,37 @@ describe('PUT /v1/products/:id', () => {
         expect(response.body.category).toBe(updatedProduct.category);
     }, 10000);
 });
-describe('DELETE /v1/products/:id', () => {
+describe('DELETE /v1/product/:id', () => {
     it('Deve excluir um produto existente', async () => {
         const productId = 1; // Supondo que o produto com ID 1 exista
 
         const response = await request(app)
-            .delete(`/v1/products/${productId}`)
+            .delete(`/v1/product/${productId}`)
             .set('Accept', 'application/json');
 
         expect(response.statusCode).toBe(204); // Status de exclusão bem-sucedida
 
         // Verificar se o produto foi realmente removido
         const getResponse = await request(app)
-            .get(`/v1/products/${productId}`)
+            .get(`/v1/product/${productId}`)
             .set('Accept', 'application/json');
 
         expect(getResponse.statusCode).toBe(404); // Espera-se que o produto não seja encontrado
     }, 10000);
 });
-describe('DELETE /v1/products/:id', () => {
+describe('DELETE /v1/product/:id', () => {
     it('Deve excluir um produto existente', async () => {
         const productId = 1; // Supondo que o produto com ID 1 exista
 
         const response = await request(app)
-            .delete(`/v1/products/${productId}`)
+            .delete(`/v1/product/${productId}`)
             .set('Accept', 'application/json');
 
         expect(response.statusCode).toBe(204); // Status de exclusão bem-sucedida
 
         // Verificar se o produto foi realmente removido
         const getResponse = await request(app)
-            .get(`/v1/products/${productId}`)
+            .get(`/v1/product/${productId}`)
             .set('Accept', 'application/json');
 
         expect(getResponse.statusCode).toBe(404); // Espera-se que o produto não seja encontrado

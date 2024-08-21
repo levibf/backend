@@ -20,7 +20,7 @@ async function generateToken(req, res) {
       return res.status(400).json({ message: 'Email ou senha incorretos.' });
     }
 
-    console.log('Usuário encontrado:', user.email); // Adicione este log
+    // console.log('Usuário encontrado:', user.email); // Adicione este log
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
